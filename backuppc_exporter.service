@@ -1,0 +1,11 @@
+[Unit]
+Description=BackupPC Exporter
+After=multi-user.target
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/bin/python3 /etc/backuppc_exporter/backuppc_exporter.py
+
+[Install]
+WantedBy=multi-user.target
