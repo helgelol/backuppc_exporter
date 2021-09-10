@@ -20,7 +20,7 @@ def backup_info_last(filepath):
             ret[k] = data[valuemap.index(k)]
     return ret
 
-IGNORED_HOSTS = ['lab2']
+IGNORED_HOSTS = ['']
 BACKUPTYPEMAP = ['full', 'incr']
 UPDATE_PERIOD = 300
 
@@ -48,17 +48,21 @@ while True:
       continue
     
     backupFilepath = dataDir + host + "/backups"
-    info = backup_info_last(backupFilepath)
-    BACKUPPC_BACKUP_NUM.labels(host).set(info['num'])
-    BACKUPPC_BACKUP_TYPE.labels(host).set(BACKUPTYPEMAP.index(info['type']))
-    BACKUPPC_BACKUP_STARTTIME.labels(host).set(info['startTime'])
-    BACKUPPC_BACKUP_ENDTIME.labels(host).set(info['endTime'])
-    BACKUPPC_BACKUP_NFILES.labels(host).set(info['nFiles'])
-    BACKUPPC_BACKUP_SIZE.labels(host).set(info['size'])
-    BACKUPPC_BACKUP_NFILESEXISTS.labels(host).set(info['nFilesExists'])
-    BACKUPPC_BACKUP_SIZEEXISTS.labels(host).set(info['sizeExists'])
-    BACKUPPC_BACKUP_STARTTIME_AGE_SECONDS.labels(host).set(now - int(info['startTime']))
-    BACKUPPC_BACKUP_ENDTIME_AGE_SECONDS.labels(host).set(now - int(info['endTime']))
-    BACKUPPC_BACKUP_DURATION_SECONDS.labels(host).set(int(info['endTime'] )- int(info['startTime']))
+    try:
+      info = backup_info_last(backupFilepath)
+      BACKUPPC_BACKUP_NUM.labels(host).set(info['num'])
+      BACKUPPC_BACKUP_TYPE.labels(host).set(BACKUPTYPEMAP.index(info['type']))
+      BACKUPPC_BACKUP_STARTTIME.labels(host).set(info['startTime'])
+      BACKUPPC_BACKUP_ENDTIME.labels(host).set(info['endTime'])
+      BACKUPPC_BACKUP_NFILES.labels(host).set(info['nFiles'])
+      BACKUPPC_BACKUP_SIZE.labels(host).set(info['size'])
+      BACKUPPC_BACKUP_NFILESEXISTS.labels(host).set(info['nFilesExists'])
+      BACKUPPC_BACKUP_SIZEEXISTS.labels(host).set(info['sizeExists'])
+      BACKUPPC_BACKUP_STARTTIME_AGE_SECONDS.labels(host).set(now - int(info['startTime']))
+      BACKUPPC_BACKUP_ENDTIME_AGE_SECONDS.labels(host).set(now - int(info['endTime']))
+      BACKUPPC_BACKUP_DURATION_SECONDS.labels(host).set(int(info['endTime'] )- int(info['startTime']))
+    except FileNotFoundError:
+      continue
+    
   time.sleep(UPDATE_PERIOD)
  
