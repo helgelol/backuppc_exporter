@@ -9,7 +9,7 @@ Prometheus Exporter for BackupPC
 # Installation
 
 ```
-git clone https://gitlab.com/helgejs/backuppc_exporter.git
+git clone https://github.com/helgelol/backuppc_exporter.git
 mv backuppc_exporter/backuppc_exporter.service /etc/systemd/system/backuppc_exporter.service
 mkdir /etc/backuppc_exporter && mv backuppc_exporter/backuppc_exporter.py && cd /etc/backuppc_exporter
 python3 -m pip install prometheus_client
